@@ -124,7 +124,7 @@ public class Utility {
         editor.putString("temp1", temp1);
         editor.putString("temp2", temp2);
         editor.putString("weather_desp", weatherDesp);
-        editor.putString("public_time", publishTime);
+        editor.putString("publish_time", publishTime);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             editor.putString("current_date", sdf.format(new Date()));   //*
         }
