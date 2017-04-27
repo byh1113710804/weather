@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -79,6 +80,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
             weatherInfoLayout.setVisibility(View.INVISIBLE);
             cityNameText.setVisibility(View.INVISIBLE);
             queryWeatherCode(countyCode);
+            Log.e("b", "1");
         } else {
             //没有县级代号直接显示本地天气
             showWeather();
@@ -111,8 +113,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
      * 查询县级代号所对应的天气代号
      */
     private void queryWeatherCode(String countyCode) {
-        String address = "http://weather.com.cn/data/list3/city" + countyCode + ".xml";
+        String address = "http://www.weather.com.cn/data/list3/city" + countyCode + ".xml";
         queryFromServer(address, "countyCode");
+        Log.e("b", "2");
     }
 
     /**
@@ -121,6 +124,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
     private void queryWeatherInfo(String weatherCode) {
         String address = "http://www.weather.com.cn/data/cityinfo/" + weatherCode + ".html";
         queryFromServer(address, "weatherCode");
+        Log.e("b", "4");
     }
 
     /**
@@ -129,7 +133,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
     private void queryFromServer(final String address, final String type) {
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
-            public void onFinish(String response) {
+            public void onFinish(final String response) {
                 if ("countyCode".equals(type)) {
                     if (!TextUtils.isEmpty(response)) {
                         //从服务器返回的数据中解析出天气代号
@@ -138,6 +142,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                             String weatherCode = array[1];
                             queryWeatherInfo(weatherCode);
                         }
+                        Log.e("b", "3");
                     } else if ("weatherCode".equals(type)) {
                         //处理服务器返回的天气信息
                         Utility.handleWeatherResponse(WeatherActivity.this, response);
@@ -147,6 +152,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                                 showWeather();
                             }
                         });
+                        Log.e("b", "5");
                     }
                 }
             }
@@ -176,6 +182,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         currentDateText.setText(prefs.getString("current_date", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        Log.e("b", "6");
 
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
