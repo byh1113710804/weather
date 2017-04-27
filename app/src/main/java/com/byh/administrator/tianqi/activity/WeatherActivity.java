@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.byh.administrator.tianqi.R;
+import com.byh.administrator.tianqi.service.AutoUpdateService;
 import com.byh.administrator.tianqi.util.HttpCallbackListener;
 import com.byh.administrator.tianqi.util.HttpUtil;
 import com.byh.administrator.tianqi.util.Utility;
@@ -110,7 +111,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
      * 查询县级代号所对应的天气代号
      */
     private void queryWeatherCode(String countyCode) {
-        String address = "http://weather.com.cn/data/list3/city" + countyCode + ".mxl";
+        String address = "http://weather.com.cn/data/list3/city" + countyCode + ".xml";
         queryFromServer(address, "countyCode");
     }
 
@@ -175,5 +176,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         currentDateText.setText(prefs.getString("current_date", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
